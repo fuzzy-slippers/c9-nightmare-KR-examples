@@ -1,87 +1,88 @@
-var Nightmare = require('nightmare');
-var nightmare = Nightmare({ show: false });
+const Nightmare = require('nightmare');
+const nightmare = Nightmare({ show: false });
+const dateFormat = require('dateformat'); // get pretty dates, times
+const fs = require('fs');
+
+//some helpful variables to record
+
+//used in the file name to indicate current module
+const currModule = 'Awd';
+
+//store current date time - used for foldernames so cant change, need time when program first run
+const now = new Date();
 
 
-// get rid of this function later - just for trying to debug document
-// Nightmare.action('dumpdebuginfo', function (done) {
-//   this.evaluate_now(function() {
-//     // var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
-//     // var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
-//     // return {
-//     //   height: h,
-//     //   width: w
-//     // }
-//     return "\nelement[0]: " + document.querySelector("#kualiForm").elements[0].outerHTML.toString() + 
-//     "\nelement[1]: " + document.querySelector("#kualiForm").elements[1].outerHTML.toString() + 
-//     "\nelement[2]: " + document.querySelector("#kualiForm").elements[2].outerHTML.toString() + 
-//       "\nelement[3]: " + document.querySelector("#kualiForm").elements[3].outerHTML.toString() + 
-//       "\nelement[4]: " + document.querySelector("#kualiForm").elements[4].outerHTML.toString() + 
-//         "\nelement[5]: " + document.querySelector("#kualiForm").elements[5].outerHTML.toString() + 
-//         "\nelement[6]: " + document.querySelector("#kualiForm").elements[6].outerHTML.toString() + 
-//           "\nelement[7]: " + document.querySelector("#kualiForm").elements[7].outerHTML.toString() + 
-//           "\nelement[8]: " + document.querySelector("#kualiForm").elements[8].outerHTML.toString() + 
-//             "\nelement[9]: " + document.querySelector("#kualiForm").elements[9].outerHTML.toString() + 
-//             "\nelement[10]: " + document.querySelector("#kualiForm").elements[10].outerHTML.toString() + 
-//               "\nelement[11]: " + document.querySelector("#kualiForm").elements[11].outerHTML.toString() + 
-//               "\nelement[12]: " + document.querySelector("#kualiForm").elements[12].outerHTML.toString() + 
-//                 "\nelement[13]: " + document.querySelector("#kualiForm").elements[13].outerHTML.toString() + 
-//                 "\nelement[14]: " + document.querySelector("#kualiForm").elements[14].outerHTML.toString() ;
-//   }, done)
-// })
-
+// start up nightmare
 nightmare
+
+// NIGHTMARE/BROWSER SETTINGS
+// --------------------------------------------------.
+
   // first set the browser size/resolution to 1024X768
   .viewport(1024, 768)
   
-  //login
+// LOGIN TO KUALI
+// --------------------------------------------------.
   .goto('http://res-demo1.kuali.co/kc-dev/')
-  .screenshot('screenshots/kuali1.png')
+  .screenshot(getUniqScreenshotName())
 
   .type('#username', 'quickstart')
-  .screenshot('screenshots/kuali2.png')
+  .screenshot(getUniqScreenshotName())
 
   .type('#password', 'password')
-  .screenshot('screenshots/kuali3.png')
+  .screenshot(getUniqScreenshotName())
   
-  .click('#login')
-  .wait(1000) // wait 1 seconds for login to happen and main kuali page to load
-  .screenshot('screenshots/kuali4.png')
-  // after redirect to main kuali welcome page
-  
-  
+  .click('#login') //will open the Kuali Research welcome page after login
+  .wait('#Uif-ApplicationHeader-Wrapper') // wait until the banner at the top of the Kuali Wrapper on the main page loads
+  .screenshot(getUniqScreenshotName())
+
+// CREATE NEW AWARD
+// --------------------------------------------------.
+
   // go to award add page URL - Going directly to inner IFRAME (that is the real award form), otherwise the selectors nightmareJS doesnt work to find the input fields
   .goto('https://res-demo1.kuali.co/kc-dev/awardHome.do?methodToCall=docHandler&command=initiate&docTypeName=AwardDocument&returnLocation=https://res-demo1.kuali.co:/kc-dev%2Fkc-krad%2FlandingPage%3FviewId%3DKc-LandingPage-RedirectView#topOfForm')
-  .screenshot('screenshots/kuali5.png')
+  .screenshot(getUniqScreenshotName())
   
-  //entering test description
-  .type('#document\\.documentHeader\\.documentDescription', 'NightmareJS Typed in this Award Description!')
-  .screenshot('screenshots/kuali6.png')  
   
-  //.dumpdebuginfo()
+// AWARD (AWARD TAB) - DOCUMENT OVERVIEW SECTION
+// --------------------------------------------------.  
+  //enter Document Overview - Description text field
+  .type('#document\\.documentHeader\\.documentDescription', 'NightmareJS Entered ' +  dateFormat(now))
+  .screenshot(getUniqScreenshotName()) 
   
-  // .evaluate(function(){
-  //   console.log('about to print document.title');
-  //   console.log(document.title);
-  // })
+    //enter Document Overview - Explanation text area
+  .type('#document\\.documentHeader\\.explanation', 'NightmareJS Entered this automatically on ' + dateFormat(now) +'!')
+  .screenshot(getUniqScreenshotName())
+
   
 
-/*
-  .evaluate(function () {
-    return document.querySelector('#main .searchCenterMiddle li a').href
-  })
-  .screenshot('screenshots/yahoo5.png')
-*/
-
-  // .end()
-  // .then(function(ip) { // This will log the your local IP
-  //   console.log('local IP:', ip);
-  // })  
-  
-  //.screenshot('screenshots/kualiend.png')
-  
+// AFTER RUNNING THE TEST - CLEANUP 
+// --------------------------------------------------.  
   .then(function (result) {
-    console.log(result)
+    console.log('Test Finished Running(see screenshots like [' + getUniqScreenshotName() + ']! \nany results? ' + result)
   })
   .catch(function (error) {
     console.error('Search failed:', error);
   });
+  
+
+
+
+
+
+//set up filename (and folder path)
+function getUniqScreenshotName() {
+  //use the current date/time "now" variable captured when the program first ran 
+  //for the folder names
+  const todaysDate = dateFormat(now, "mm_dd_yy");
+  const startTime = dateFormat(now, "h_MM_ss_TT");
+  
+  //folder to store the screenshots
+  const baseScreenshotFolder = 'screenshots';
+  const subFolder =  todaysDate + '__' + startTime;
+  const folderpath = baseScreenshotFolder + '/' + subFolder + '/';
+  //create folders if they dont exist
+  if (!fs.existsSync(baseScreenshotFolder)){fs.mkdirSync(baseScreenshotFolder);}
+  if (!fs.existsSync(folderpath)){fs.mkdirSync(folderpath);}  
+  return folderpath + currModule + new Date().valueOf() + '.png';
+}
