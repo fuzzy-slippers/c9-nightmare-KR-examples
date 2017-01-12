@@ -105,11 +105,11 @@ nightmare
   //click the save button on the bottom
   .click("input.globalbuttons")
   //take a screenshot right away to hopefully catch the saving box
-  .screenshot(getUniqScreenshotName())
+  .screenshot(getUniqScreenshotName()).wait(1)
   //wait three seconds for save to finish
-  .wait(3000)
+  .wait(4000)
   //take another screenshot after the save just to make sure there wasn't an error displayed
-  .screenshot(getUniqScreenshotName())
+  .screenshot(getUniqScreenshotName()).wait(1)
 
 
 // AWARD CONTACTS TAB - CLICK ON CONTACTS TAB
@@ -117,14 +117,14 @@ nightmare
   //click on contacts tab
   .click("input[name='methodToCall\\.headerTab\\.headerDispatch\\.save\\.navigateTo\\.contacts'")
   //wait three seconds for contacts tab loading to finish
-  .wait(3000)
+  .wait(2000)
   //take screenshot of contacts tab after it loaded
-  .screenshot(getUniqScreenshotName())
+  .screenshot(getUniqScreenshotName()).wait(1)
   
   //click expand all button to show all fields on the tab
   .click("input[name='methodToCall\\.showAllTabs']")
   //take a screenshot of expanded tabs
-  .screenshot(getUniqScreenshotName())
+  .screenshot(getUniqScreenshotName()).wait(1)
 
 // AWARD CONTACTS TAB - UNIT CONTACTS
 // --------------------------------------------------.
@@ -133,26 +133,26 @@ nightmare
   //wait 2 seconds for lookup screen to load
   .wait(2000)
   //take a screenshot of lookup screen after
-  .screenshot(getUniqScreenshotName())
+  .screenshot(getUniqScreenshotName()).wait(1)
 
   //enter personid of 10009 (Rosemary Hanlon)
   .type("#personId", "10009")
   .screenshot(getUniqScreenshotName()).wait(1) 
   
-  //PERSON LOOKUP SCREEN
+  //BRINGS UP PERSON LOOKUP SCREEN
   //click search button
   .click("input[name='methodToCall\\.search']")
   //wait 2 seconds for search results to load
   .wait(2000)
   //take screenshot
-  .screenshot(getUniqScreenshotName())
+  .screenshot(getUniqScreenshotName()).wait(1)
   
-  //click return value to return back to contacts page
+  //click "return value" link to return back to contacts page
   .click("a[title='return valueKcPerson Id=10009 ']")
   //wait 2 seconds for results to return
   .wait(2000)
   //take screenshot
-  .screenshot(getUniqScreenshotName())
+  .screenshot(getUniqScreenshotName()).wait(1)
   
   //BACK TO CONTACTS PAGE
   //click the add button to add rosemary
@@ -160,14 +160,14 @@ nightmare
   //wait 2 seconds for search results to load
   .wait(2000)
   //take screenshot
-  .screenshot(getUniqScreenshotName())  
+  .screenshot(getUniqScreenshotName()).wait(1)  
   
   //save the contacts info
   .click("input[name='methodToCall\\.save']")
   //wait 2 seconds for search results to load
-  .wait(2000)
+  .wait(3000)
   //take screenshot
-  .screenshot(getUniqScreenshotName())  
+  .screenshot(getUniqScreenshotName()).wait(1)  
   
   
 // AFTER RUNNING THE TEST - CLEANUP 
