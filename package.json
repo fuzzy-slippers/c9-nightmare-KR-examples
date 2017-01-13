@@ -1,10 +1,10 @@
 {
   "name": "chat-example",
   "version": "0.0.0",
-  "description": "A chat example to showcase how to use `socket.io` with a static `express` server with `async` for control flow.",
+  "description": "Example Kuali ResDemo1 Automated Test/Data Entry script (Node.js/NightmareJS) project using the Cloud9 IDE (and servers",
   "main": "server.js",
   "repository": "",
-  "author": "Mostafa Eweda <mo.eweda@gmail.com>",
+  "author": "Zach Friedman (github: fuzzy-slippers)",
   "dependencies": {
     "async": "~0.2.8",
     "dateformat": "^2.0.0",
@@ -14,3 +14,4 @@
     "socket.io": "~0.9.14"
   }
 }
+
