@@ -23,8 +23,8 @@ nightmare
 // NIGHTMARE/BROWSER SETTINGS
 // --------------------------------------------------.
 
-  // first set the browser size/resolution to 1024X2200 (the reason its 2200 is that way we capture the whole long scrolling page down to the save button)
-  .viewport(1024, 2200)
+  // first set the browser size/resolution to 1280X3500 (the reason its 300 is that way we capture the whole long scrolling page down to the save button)
+  .viewport(1280, 3500)
   
 // LOGIN TO KUALI
 // --------------------------------------------------.
@@ -663,13 +663,23 @@ nightmare
   .wait(3000)
   .screenshot(getUniqScreenshotName()).wait(1) 
   
+  //click expand all button to show all fields on the contacts tab AGAIN
+  .click("input[name='methodToCall\\.showAllTabs']")
+  //take a screenshot of expanded tabs
+  .screenshot(getUniqScreenshotName()).wait(1)  
+  
 
-// AWARD (COMMITMENTS TAB) - CLICK ON CONTACTS TAB
+// AWARD (COMMITMENTS TAB) - CLICK ON COMMITMENTS TAB
 // --------------------------------------------------. 
 //click on commitments tab
 .click("input[name='methodToCall\\.headerTab\\.headerDispatch\\.save\\.navigateTo\\.commitments'")
 .wait(10000)
 .screenshot(getUniqScreenshotName()).wait(1)
+
+//click expand all button to show all fields on the commitments tab
+// .click("input[name='methodToCall\\.showAllTabs']")
+// //take a screenshot of expanded tabs
+// .screenshot(getUniqScreenshotName()).wait(1)  
 
 // //click expand all button to show all fields on the tab
 // .click("input[name='methodToCall\\.showAllTabs']")
@@ -682,9 +692,9 @@ nightmare
 // .click("input[name='methodToCall\\.showAllTabs']")
 
 //click expand to show cost sharing
-.click("input[name='methodToCall\\.toggleTab\\.tabCostSharing']")
-.wait(3000)
-.screenshot(getUniqScreenshotName()).wait(1)
+// .click("input[name='methodToCall\\.toggleTab\\.tabCostSharing']")
+// .wait(3000)
+// .screenshot(getUniqScreenshotName()).wait(1)
 
 //click expand to show rates
 // .click("input[name='methodToCall\\.toggleTab\\.tabRates']")
@@ -709,9 +719,9 @@ nightmare
 // LAST SAVE BEFORE ENDING
 // --------------------------------------------------. 
 //save, wait, screenshot
-.click("input[name='methodToCall.save']")
-.wait(3000)
-.screenshot(getUniqScreenshotName()).wait(1) 
+// .click("input[name='methodToCall.save']")
+// .wait(3000)
+// .screenshot(getUniqScreenshotName()).wait(1) 
 
 // AWARD (PAYMENT REPORTS TERMS) - CLICK ON TAB
 // --------------------------------------------------. 
@@ -733,12 +743,19 @@ nightmare
 
 // AFTER RUNNING THE TEST - CLEANUP 
 // --------------------------------------------------.  
+  // end the automated testing robot/program
+  .url()
+  .visible("input[name='methodToCall\\.headerTab\\.headerDispatch\\.save\\.navigateTo\\.commitments'")
+  .end()
+  .on('page', function(type="error", message, stack){console.log("message: " + message + "\n" + "stack: " + stack)})
+  //display any results or errors returned back
   .then(function (result) {
     console.log("Test Finished Running(see screenshots like [" + getUniqScreenshotName() + "]! \nany results? " + result)
   })
   .catch(function (error) {
     console.error("Search failed:", error);
-  });
+  })
+
   
 
 
