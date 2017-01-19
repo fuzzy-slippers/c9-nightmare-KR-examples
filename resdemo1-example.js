@@ -746,15 +746,18 @@ nightmare
   // end the automated testing robot/program
   .url()
   .visible("input[name='methodToCall\\.headerTab\\.headerDispatch\\.save\\.navigateTo\\.commitments'")
+  .evaluate(function () {
+    console.log("document.querySelector(#document.award.awardFandaRateComment.comments).value is: " + document.querySelector("#document\\.award\\.awardFandaRateComment\\.comments").value)
+    return document.querySelector("#document\\.award\\.awardFandaRateComment\\.comments").value;
+  })
   .end()
-  .on('page', function(type="error", message, stack){console.log("message: " + message + "\n" + "stack: " + stack)})
+  //.on('page', function(type="error", message, stack){console.log("message: " + message + "\n" + "stack: " + stack);})
   //display any results or errors returned back
-  .then(function (result) {
-    console.log("Test Finished Running(see screenshots like [" + getUniqScreenshotName() + "]! \nany results? " + result)
-  })
-  .catch(function (error) {
-    console.error("Search failed:", error);
-  })
+  .then(function(result) {
+    console.log("Test Finished Running(see screenshots like [" + getUniqScreenshotName() + "]! \nany results? " + result);
+  }, function(err) {
+    console.error("Failed with error:", err);
+  });  
 
   
 
