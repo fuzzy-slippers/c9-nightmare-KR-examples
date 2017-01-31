@@ -1,5 +1,12 @@
 const Nightmare = require("nightmare");
-const nightmare = Nightmare({ show: false });
+const nightmare = Nightmare({ show: false,
+
+  // Make sure that, not only are we using a memory partition, but that
+  // it is probably a different one than any we've used before.
+  webPreferences: {partition: 'custom-partition' + Math.random()}
+
+  
+});
 const dateFormat = require("dateformat"); // get pretty dates, times
 const fs = require("fs");
 
@@ -23,8 +30,8 @@ nightmare
 // NIGHTMARE/BROWSER SETTINGS
 // --------------------------------------------------.
 
-  // first set the browser size/resolution to 1280X3500 (the reason its 300 is that way we capture the whole long scrolling page down to the save button)
-  .viewport(1280, 3500)
+  // first set the browser size/resolution to 3000X3500 (the reason its 300 is that way we capture the whole long scrolling page down to the save button)
+  .viewport(1024, 3500)
   
 // LOGIN TO KUALI
 // --------------------------------------------------.
@@ -35,7 +42,7 @@ nightmare
   .screenshot(getUniqScreenshotName()).wait(1)
 
   .type("#password", "password")
-  .screenshot(getUniqScreenshotName()).wait(1)
+  .pdf(getUniqScreenshotName()).wait(1)
   
   .click("#login") //will open the Kuali Research welcome page after login
   .wait("#Uif-ApplicationHeader-Wrapper") // wait until the banner at the top of the Kuali Wrapper on the main page loads
@@ -659,7 +666,7 @@ nightmare
   //click the add button to add sponsor contact
   .click("input[name='methodToCall\\.addSponsorContact']")
   //wait 2 seconds for search results to load
-  .click("input[name='methodToCall.save']")
+  .click("input[name='methodToCall\\.save']")
   .wait(3000)
   .screenshot(getUniqScreenshotName()).wait(1) 
   
@@ -677,9 +684,9 @@ nightmare
 .screenshot(getUniqScreenshotName()).wait(1)
 
 //click expand all button to show all fields on the commitments tab
-// .click("input[name='methodToCall\\.showAllTabs']")
-// //take a screenshot of expanded tabs
-// .screenshot(getUniqScreenshotName()).wait(1)  
+.click("input[name='methodToCall\\.showAllTabs']")
+//take a screenshot of expanded tabs
+.screenshot(getUniqScreenshotName()).wait(1)  
 
 // //click expand all button to show all fields on the tab
 // .click("input[name='methodToCall\\.showAllTabs']")
@@ -702,7 +709,7 @@ nightmare
 // .screenshot(getUniqScreenshotName()).wait(1)
 
 //Enter destination accounts for F&A Rates
-//.type("#document.awardList\\[0\\]\\.awardFandaRate\\[0\\]\\.destinationAccount", "TBD3")
+// .type("#document.awardList\\[0\\]\\.awardFandaRate\\[0\\]\\.destinationAccount", "TBD3")
 //.type("#document.awardList\\[0\\]\\.awardFandaRate\\[1\\]\\.destinationAccount", "TBD4")
 
 
